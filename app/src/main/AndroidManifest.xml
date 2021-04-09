@@ -13,9 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MessengerActivity"></activity>
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".FriendActivity"
+            android:label="Friends"/>
+        <activity
+            android:name=".MessengerActivity"
+            android:parentActivityName=".FriendActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:label="Signing up"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="Logging in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import fr.homingpigeon.backend.Client;
+
 public class MainActivity extends AppCompatActivity {
 
     Button mLogin;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        setTitle("Sign in");
         setContentView(R.layout.activity_main);
         mLogin = (Button)findViewById(R.id.login);
         mSignup = (Button)findViewById(R.id.signup);
@@ -38,10 +42,13 @@ public class MainActivity extends AppCompatActivity {
                         String password = mPasswordField.getText().toString();
                         Log.v("username", username);
                         Log.v("password", password);
-                        Client c = new Client(false);
+                        Client c = new Client(null);//TODO FAIRE SETTINGS
                         String result = c.login(username,password);
                         Toast.makeText(MainActivity.this,result,Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(MainActivity.this,MessengerActivity.class);
+                        if(c.getToken() == null)
+                            return;
+                        Intent intent = new Intent(MainActivity.this,FriendActivity.class);
+                        intent.putExtra("token",c.getToken());
                         startActivity(intent);
                     }
                 });
@@ -51,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 {
                     public void onClick(View view)
                     {
+                        String username = mUsernameField.getText().toString();
                         Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
+                        intent.putExtra("username",username);
                         startActivity(intent);
                     }
                 });
