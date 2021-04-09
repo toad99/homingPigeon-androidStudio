@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import fr.homingpigeon.backend.Client;
 
-public class MainActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     Button mLogin;
     Button mSignup;
@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
                         Log.v("password", password);
                         Client c = new Client(null);//TODO FAIRE SETTINGS
                         String result = c.login(username,password);
-                        Toast.makeText(MainActivity.this,result,Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignInActivity.this,result,Toast.LENGTH_LONG).show();
                         if(c.getToken() == null)
                             return;
-                        Intent intent = new Intent(MainActivity.this,FriendActivity.class);
+                        Intent intent = new Intent(SignInActivity.this,FriendActivity.class);
                         intent.putExtra("token",c.getToken());
                         startActivity(intent);
                     }
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view)
                     {
                         String username = mUsernameField.getText().toString();
-                        Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
+                        Intent intent = new Intent(SignInActivity.this,SignUpActivity.class);
                         intent.putExtra("username",username);
                         startActivity(intent);
                     }

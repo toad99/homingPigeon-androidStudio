@@ -29,7 +29,7 @@ public class FriendActivity extends AppCompatActivity {
         friendService = new FriendService(new Client(token));
 
         List<String> friends = friendService.getFriends();
-
+        createFriendsViews(friends);
     }
 
     public void createFriendsViews(List<String> friends) {

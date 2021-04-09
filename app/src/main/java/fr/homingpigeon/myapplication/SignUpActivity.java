@@ -89,7 +89,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Client c = new Client(null);
                         String result = c.signUp(username,password1,public_key);
                         Toast.makeText(SignUpActivity.this,result,Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+                        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                         startActivity(intent);
                     }
                 });

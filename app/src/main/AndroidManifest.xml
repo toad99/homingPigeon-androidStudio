@@ -22,9 +22,9 @@
         <activity
             android:name=".SignUpActivity"
             android:label="Signing up"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".SignInActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SignInActivity"
             android:label="Logging in">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
