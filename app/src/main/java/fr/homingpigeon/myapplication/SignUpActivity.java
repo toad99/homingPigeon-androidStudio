@@ -1,23 +1,24 @@
 package fr.homingpigeon.myapplication;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-import java.util.Base64;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import java.security.*;
+import java.util.Base64;
 import fr.homingpigeon.backend.Client;
+
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         Intent i = getIntent();
@@ -48,7 +50,8 @@ public class SignUpActivity extends AppCompatActivity {
         mSignup.setOnClickListener(
                 new View.OnClickListener()
                 {
-                    @SuppressLint("NewApi")
+
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     public void onClick(View view)
                     {
                         String username = mUsernameField.getText().toString();
@@ -67,22 +70,17 @@ public class SignUpActivity extends AppCompatActivity {
 
                         try {
                             byte[][] keyPairBytes = new byte[2][];
-                            KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "SunRsaSign");
+                            KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
                             gen.initialize(1024, new SecureRandom());
                             KeyPair pair = gen.generateKeyPair();
                             keyPairBytes[0] = pair.getPrivate().getEncoded();
                             keyPairBytes[1] = pair.getPublic().getEncoded();
                             private_key = Base64.getEncoder().encodeToString(keyPairBytes[0]);
                             public_key = Base64.getEncoder().encodeToString(keyPairBytes[1]);
-
-                            /*System.out.println(private_key.length());
-                            System.out.println(public_key.length());
-                            System.out.println(private_key);
-                            System.out.println(public_key);*/
+                            savePrivateKey(username);
+                            Log.d("pvt",loadPrivateKey(username));
 
                         } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchProviderException e) {
                             e.printStackTrace();
                         }
 
@@ -95,16 +93,18 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    public void savePrivateKey() {
+    public void savePrivateKey(String username) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PVT, private_key);
+        editor.putString(username, private_key);
         editor.apply();
-        Toast.makeText(this, "Private key saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SignUpActivity.this, "Private key saved", Toast.LENGTH_SHORT).show();
     }
 
-    public String loadPrivateKey() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        return sharedPreferences.getString(PVT, "ERROR ! THE PRIVATE KEY WAS NOT FOUND");
+    public String loadPrivateKey(String username) {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        String s = sharedPreferences.getString(username, "");
+        Log.d("pvt",s);
+        return s;
     }
 }

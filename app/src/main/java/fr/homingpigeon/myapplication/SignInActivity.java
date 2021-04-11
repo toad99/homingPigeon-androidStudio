@@ -27,7 +27,7 @@ public class SignInActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         setTitle("Sign in");
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sign_in);
         mLogin = (Button)findViewById(R.id.login);
         mSignup = (Button)findViewById(R.id.signup);
         mUsernameField = (EditText)findViewById(R.id.usernameField);
@@ -47,8 +47,9 @@ public class SignInActivity extends AppCompatActivity {
                         Toast.makeText(SignInActivity.this,result,Toast.LENGTH_LONG).show();
                         if(c.getToken() == null)
                             return;
-                        Intent intent = new Intent(SignInActivity.this,FriendActivity.class);
+                        Intent intent = new Intent(SignInActivity.this,MainActivity.class);
                         intent.putExtra("token",c.getToken());
+                        intent.putExtra("username",username);
                         startActivity(intent);
                     }
                 });

@@ -89,6 +89,8 @@ public class Client {
         connexion.setRequestMethod("POST");
         connexion.setRequestProperty("Content-Type", "application/json; utf-8");
         connexion.setRequestProperty("Accept", "application/json");
+        if(token != null)
+            connexion.setRequestProperty ("Authorization",prefixeToken + token);
         connexion.setDoOutput(true);
 
         OutputStream os = connexion.getOutputStream();

@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
+        <activity android:name=".AddingFriendsActivity"></activity>
+        <activity android:name=".ChatActivity" />
         <activity
-            android:name=".FriendActivity"
-            android:label="Friends"/>
-        <activity
-            android:name=".MessengerActivity"
-            android:parentActivityName=".FriendActivity" />
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
             android:label="Signing up"

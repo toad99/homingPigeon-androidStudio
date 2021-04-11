@@ -45,4 +45,29 @@ public class FriendService {
         }
         return Collections.emptyList();
     }
+
+    public String deleteFriend(String friendo) {
+        HttpURLConnection connexion;
+        JSONObject json;
+        try {
+            connexion = client.doGet("account/"+friendo+"/delete");
+            int code_retour = connexion.getResponseCode();
+            if(code_retour == HttpURLConnection.HTTP_OK) {
+                return UsefullFunctions.readInputStream(connexion.getInputStream());
+            }
+            else{
+                String payload = UsefullFunctions.readInputStream(connexion.getErrorStream());
+                if(payload.length() == 0)
+                    return "you must reconnect";
+                JSONArray jsonArray = new JSONArray(payload);
+                return jsonArray.get(0).toString();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }
